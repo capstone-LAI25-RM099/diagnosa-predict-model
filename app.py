@@ -59,3 +59,10 @@ def predict_disease(data: SymptomInput):
         return {"predicted_disease": predicted_label}
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/symptoms")
+def get_all_symptoms():
+    symptoms = set()
+    for col in column_symptom_map.values():
+        symptoms.update(col)
+    return sorted(list(symptoms))
