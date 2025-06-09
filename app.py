@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import pandas as pd
@@ -46,6 +47,11 @@ app.add_middleware(
 
 class SymptomInput(BaseModel):
     symptoms: list[str]
+
+
+@app.get("/")
+def root():
+    return {"message": "API is running"}
 
 @app.post("/predict")
 def predict_disease(data: SymptomInput):
