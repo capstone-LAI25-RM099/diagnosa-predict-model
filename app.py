@@ -27,9 +27,6 @@ except FileNotFoundError:
 try:
     feature_cols_in_model = model.feature_names_in_
 except AttributeError:
-    # Fallback if feature_names_in_ is not available (e.g., older scikit-learn)
-    # You might need to load the original training data or store the column names
-    # For now, let's assume a fixed number of symptoms based on your notebook
     feature_cols_in_model = [f'Symptom_{i}' for i in range(1, 18)]
 
 
@@ -38,6 +35,14 @@ column_symptom_map = {"Symptom_" + str(i+1): list(severity_map.keys()) for i in 
 
 
 app = FastAPI()
+# Tambahkan CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class SymptomInput(BaseModel):
     symptoms: list[str]
