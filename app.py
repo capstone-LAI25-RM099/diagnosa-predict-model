@@ -33,6 +33,10 @@ except AttributeError:
     feature_cols_in_model = [f'Symptom_{i}' for i in range(1, 18)]
 
 
+# Auto-generate column_symptom_map
+column_symptom_map = {"Symptom_" + str(i+1): list(severity_map.keys()) for i in range(len(feature_cols_in_model))}
+
+
 app = FastAPI()
 
 class SymptomInput(BaseModel):
@@ -62,7 +66,4 @@ def predict_disease(data: SymptomInput):
 
 @app.get("/symptoms")
 def get_all_symptoms():
-    symptoms = set()
-    for col in column_symptom_map.values():
-        symptoms.update(col)
-    return sorted(list(symptoms))
+    return sorted(list(severity_map.keys()))
