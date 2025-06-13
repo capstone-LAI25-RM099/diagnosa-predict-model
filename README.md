@@ -53,26 +53,17 @@ diagnosa-predict-model/
 ## Cara Menjalankan Backend
 Clone repository:
 ```
-bash
-Copy
-Edit
 git clone https://github.com/username/diagnosa-predict-model.git
 cd diagnosa-predict-model
 ```
 
 Install dependency:
 ```
-bash
-Copy
-Edit
 pip install -r requirements.txt
 ```
 
 Jalankan aplikasi Flask:
 ```
-bash
-Copy
-Edit
 python app.py
 ```
 Aplikasi akan berjalan di localhost:5000.
