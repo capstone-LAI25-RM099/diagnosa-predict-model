@@ -64,6 +64,7 @@ pip install -r requirements.txt
 
 Jalankan aplikasi Flask:
 ```
-python app.py
+uvicorn app:app --reload 
 ```
-Aplikasi akan berjalan di localhost:5000.
+Aplikasi akan berjalan di 
+`[http://127.0.0.1:8000/](http://127.0.0.1:8000/symptoms).`
