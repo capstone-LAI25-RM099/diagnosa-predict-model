@@ -67,4 +67,4 @@ Jalankan aplikasi Flask:
 uvicorn app:app --reload 
 ```
 Aplikasi akan berjalan di 
-`[http://127.0.0.1:8000/](http://127.0.0.1:8000/symptoms).`
+`http://127.0.0.1:8000/symptoms`
