@@ -65,6 +65,9 @@ except AttributeError:
 class SymptomInput(BaseModel):
     symptoms: list[str]
 
+# Inisialisasi translator sekali saja untuk efisiensi
+translator = GoogleTranslator(source='en', target='id')
+
 @app.post("/predict")
 def predict_disease(data: SymptomInput):
     input_symptoms = [s.strip().lower().replace('_', ' ') for s in data.symptoms]
@@ -83,8 +86,7 @@ def predict_disease(data: SymptomInput):
         description = desc_map.get(disease_key, "Deskripsi tidak tersedia.")
         precautions = precaution_map.get(disease_key, ["Informasi pencegahan tidak tersedia."])
 
-        # Translasi
-        translator = GoogleTranslator(source='en', target='id')
+        # Translasi label, deskripsi, dan precaution
         translated_label = translator.translate(predicted_label)
         translated_description = translator.translate(description)
         translated_precautions = [translator.translate(p) for p in precautions]
@@ -98,7 +100,17 @@ def predict_disease(data: SymptomInput):
 
     except Exception as e:
         return {"error": str(e)}
-        
+
 @app.get("/symptoms")
 def get_all_symptoms():
-    return sorted(list(severity_map.keys()))
+    symptoms_list = sorted(list(severity_map.keys()))
+    translated_symptoms = []
+
+    for symptom in symptoms_list:
+        try:
+            translated = translator.translate(symptom)
+            translated_symptoms.append({"original": symptom, "translated": translated})
+        except:
+            translated_symptoms.append({"original": symptom, "translated": symptom})
+
+    return translated_symptoms
