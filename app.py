@@ -1,4 +1,4 @@
-from fastapi import FastAPIMore actions
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from deep_translator import GoogleTranslator
@@ -74,7 +74,7 @@ def predict_disease(data: SymptomInput):
         if i < len(feature_cols_in_model):
             input_df.iloc[0, i] = severity_map.get(symptom, 0)
 
-    try:
+     try:
         prediction = model.predict(input_df)[0]
         predicted_label = le.inverse_transform([prediction])[0].strip()
         disease_key = predicted_label.lower()
@@ -85,11 +85,12 @@ def predict_disease(data: SymptomInput):
 
         # Translasi
         translator = GoogleTranslator(source='en', target='id')
+        translated_label = translator.translate(predicted_label)
         translated_description = translator.translate(description)
         translated_precautions = [translator.translate(p) for p in precautions]
 
         return {
-            "predicted_disease": predicted_label,
+            "predicted_disease": translated_label,
             "description": translated_description,
             "precaution": translated_precautions
         }
