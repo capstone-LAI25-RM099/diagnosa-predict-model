@@ -109,8 +109,9 @@ def get_all_symptoms():
     for symptom in symptoms_list:
         try:
             translated = translator.translate(symptom)
-            translated_symptoms.append({"original": symptom, "translated": translated})
+            translated_symptoms.append({"label": translated.capitalize(), "value": symptom})
         except:
-            translated_symptoms.append({"original": symptom, "translated": symptom})
+            translated_symptoms.append({"label": symptom.capitalize(), "value": symptom})
 
     return translated_symptoms
+
