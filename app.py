@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPIMore actions
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from deep_translator import GoogleTranslator
@@ -65,9 +65,6 @@ except AttributeError:
 class SymptomInput(BaseModel):
     symptoms: list[str]
 
-# Inisialisasi translator sekali saja untuk efisiensi
-translator = GoogleTranslator(source='en', target='id')
-
 @app.post("/predict")
 def predict_disease(data: SymptomInput):
     input_symptoms = [s.strip().lower().replace('_', ' ') for s in data.symptoms]
@@ -86,14 +83,15 @@ def predict_disease(data: SymptomInput):
         description = desc_map.get(disease_key, "Deskripsi tidak tersedia.")
         precautions = precaution_map.get(disease_key, ["Informasi pencegahan tidak tersedia."])
 
-        # Translasi label, deskripsi, dan precaution
-        translated_label = translator.translate(predicted_label)
+        # Translasi
+        translator = GoogleTranslator(source='en', target='id')
+
         translated_description = translator.translate(description)
         translated_precautions = [translator.translate(p) for p in precautions]
 
         return {
             "predicted_disease": predicted_label,
-            "predicted_disease_translated": translated_label,
+
             "description": translated_description,
             "precaution": translated_precautions
         }
@@ -103,15 +101,4 @@ def predict_disease(data: SymptomInput):
 
 @app.get("/symptoms")
 def get_all_symptoms():
-    symptoms_list = sorted(list(severity_map.keys()))
-    translated_symptoms = []
-
-    for symptom in symptoms_list:
-        try:
-            translated = translator.translate(symptom)
-            translated_symptoms.append({"label": translated.capitalize(), "value": symptom})
-        except:
-            translated_symptoms.append({"label": symptom.capitalize(), "value": symptom})
-
-    return translated_symptoms
-
+    return sorted(list(severity_map.keys()))
