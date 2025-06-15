@@ -85,13 +85,11 @@ def predict_disease(data: SymptomInput):
 
         # Translasi
         translator = GoogleTranslator(source='en', target='id')
-
         translated_description = translator.translate(description)
         translated_precautions = [translator.translate(p) for p in precautions]
 
         return {
             "predicted_disease": predicted_label,
-
             "description": translated_description,
             "precaution": translated_precautions
         }
